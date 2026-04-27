@@ -18,6 +18,18 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
+
+
+
+
+
+
+
+# -------------------------------------------------------------------------------------
+
+
+
+
 @api_view(['POST'])
 def register_api(request):
     """Ro'yxatdan o'tish"""
@@ -125,12 +137,24 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(postlar, many=True)
         return Response(serializer.data)
 
+
 @api_view(['GET'])
 def post_list_api(request):
     """Barcha postlarni olish"""
     postlar = Post.objects.filter(nashr_etilgan=True).order_by('-yaratilgan_sana')
     serializer = PostSerializer(postlar, many=True)
     return Response(serializer.data)
+
+
+
+
+
+# ----------------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 def bosh_sahifa(request):
