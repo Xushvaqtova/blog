@@ -48,7 +48,7 @@ class IzohForma(forms.ModelForm):
             }),
         }
         labels = {
-            'matn': '' 
+            'matn': ''
         }
 
 

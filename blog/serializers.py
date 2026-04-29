@@ -1,8 +1,10 @@
 from rest_framework import serializers
-from .models import Post, Profil
-from django.contrib.auth.models import User
+
+from .models import Post
+
 
 class PostSerializer(serializers.ModelSerializer):
+    muallif = serializers.PrimaryKeyRelatedField(read_only=True)
     muallif_ismi = serializers.CharField(source='muallif.username', read_only=True)
 
     class Meta:
@@ -17,6 +19,6 @@ class PostSerializer(serializers.ModelSerializer):
             'yaratilgan_sana',
             'yangilangan_sana',
             'nashr_etilgan',
-            'korildi'
+            'korildi',
         ]
-        read_only_fields = ['id', 'yaratilgan_sana', 'yangilangan_sana', 'korildi']
+        read_only_fields = ['id', 'muallif', 'muallif_ismi', 'yaratilgan_sana', 'yangilangan_sana', 'korildi']

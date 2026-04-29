@@ -10,4 +10,5 @@ def profil_yaratish(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def profil_saqlash(sender, instance, **kwargs):
-    instance.profil.save()
+    if hasattr(instance, 'profil'):
+        instance.profil.save()

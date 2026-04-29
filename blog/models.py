@@ -24,8 +24,11 @@ class Post(models.Model):
         indexes = [
             models.Index(fields=['-yaratilgan_sana', 'nashr_etilgan']),
         ]
+
     def __str__(self):
         return self.sarlavha
+
+
 class Izoh(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='izohlar')
     muallif = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -35,16 +38,17 @@ class Izoh(models.Model):
     def __str__(self):
         return f'Izoh: {self.muallif.username} - {self.post.sarlavha}'
 
+
 class Like(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='layklar')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ['post', 'user'] 
+        unique_together = ['post', 'user']
 
     def __str__(self):
         return f'{self.user.username} liked {self.post.sarlavha}'
-    
+
 
 class Profil(models.Model):
     foydalanuvchi = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -59,10 +63,12 @@ class Profil(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        # Rasmni kichraytirish
-        img = Image.open(self.rasm.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.rasm.path)
+        # Rasmni kichraytirish. Fayl topilmasa profil saqlanishi to‘xtab qolmasin.
+        try:
+            img = Image.open(self.rasm.path)
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.rasm.path)
+        except (FileNotFoundError, ValueError):
+            pass
